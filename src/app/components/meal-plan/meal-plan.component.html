@@ -1,0 +1,43 @@
+<div class="d-flex flex-column min-vh-100">
+  <main class="flex-grow-1 px-5">
+    <div class="container">
+      <h2>Your Meal Plan</h2>
+      <div class="meal-planner">
+        <div class="week-navigation">
+          <button class="btn btn-outline-secondary">&#8249; Prev Week</button>
+          <div class="week-days">
+            <span *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']"
+                  [ngClass]="{'active': selectedDay === day}"
+                  (click)="selectDay(day)">{{ day }}</span>
+          </div>
+          <button class="btn btn-outline-secondary">Next Week &#8250;</button>
+        </div>
+        <div class="meal-types">
+          <span *ngFor="let mealType of ['Breakfast', 'Lunch', 'Dinner', 'Snacks']"
+                [ngClass]="{'active': selectedMealType === mealType}"
+                (click)="selectMealType(mealType)">{{ mealType }}</span>
+        </div>
+        <div class="meal-plan-grid">
+          <div *ngIf="selectedDay && selectedMealType">
+            <div *ngFor="let recipe of mealPlan[selectedDay][selectedMealType]" class="card mb-3">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img [src]="recipe.image" [alt]="recipe.title" class="card-img">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    <p class="card-text">Servings: {{ recipe.servings }}</p>
+                    <p class="card-text">Ready in: {{ recipe.readyInMinutes }} minutes</p>
+                    <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
+                    <button class="btn btn-danger" (click)="removeRecipeFromMealPlan(recipe, selectedDay, selectedMealType)">Remove</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,52 @@
+<div class="d-flex flex-column min-vh-100">
+  <main class="flex-grow-1 px-5">
+    <div class="container">
+      <h2>Search for Recipes</h2>
+      <div class="search-section">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipes, groceries, meal plans..." [(ngModel)]="searchQuery">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="searchRecipes()">Search</button>
+          </div>
+        </div>
+        <div class="filter-section" *ngIf="showFilters">
+
+        </div>
+      </div>
+    
+      <div class="search-results mb-5">
+        <h3 *ngIf="searchResults.length > 0">Recipes based off your search</h3>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let recipe of searchResults">
+            <div class="card mb-3 h-100 d-flex flex-column">
+              <img [src]="recipe.image" class="card-img-top" alt="{{ recipe.name }}">
+              <div class="card-body d-flex flex-column">
+                <div class="card-content flex-grow-1">
+                  <h5 class="card-title">{{ recipe.title }}</h5>
+                </div>
+                <button class="btn btn-primary mt-auto" (click)="addToFavorites(recipe)">Add to Favorites</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="popular-recipes">
+        <h3>Popular Recipes</h3>
+        <div class="row">
+          <div class="col-md-3" *ngFor="let recipe of popularRecipes">
+            <div class="card mb-3 h-100 d-flex flex-column">
+              <img [src]="recipe.image" class="card-img-top" alt="{{recipe.name}}">
+              <div class="card-body d-flex flex-column">
+                <div class="card-content flex-grow-1">
+                  <h5 class="card-title">{{recipe.title}}</h5>
+                </div>
+                <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

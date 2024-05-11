@@ -1,0 +1,37 @@
+<div class="d-flex flex-column min-vh-100">
+  <main class="flex-grow-1 px-5">
+    <div class="container">
+      <div class="row" *ngIf="recipe">
+        <div class="col-md-6">
+          <img [src]="recipe.image" alt="Recipe Image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+          <h2>{{ recipe.title }}</h2>
+          <p>Prep time: {{ recipe.readyInMinutes }} min</p>
+          <p>Servings: {{ recipe.servings }}</p>
+          <h4>Ingredients:</h4>
+          <ul>
+            <li *ngFor="let ingredient of recipe.extendedIngredients">
+              {{ ingredient.originalName }}
+            </li>
+          </ul>
+          <h4>Macros:</h4>
+          <ul *ngIf="recipe.nutrition">
+            <li>Calories: {{ recipe.nutrition.nutrients[0].amount }}</li>
+            <li>Carbs: {{ recipe.nutrition.nutrients[1].amount }}g</li>
+            <li>Fat: {{ recipe.nutrition.nutrients[2].amount }}g</li>
+            <li>Protein: {{ recipe.nutrition.nutrients[3].amount }}g</li>
+          </ul>
+        </div>
+      </div>
+      <div class="row mt-4" *ngIf="recipe && recipe.analyzedInstructions">
+        <div class="col-md-12">
+          <h4>Instructions:</h4>
+          <ol>
+            <li *ngFor="let instruction of recipe.analyzedInstructions[0].steps">{{ instruction.step }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

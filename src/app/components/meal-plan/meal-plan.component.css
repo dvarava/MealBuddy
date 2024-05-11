@@ -1,0 +1,38 @@
+.meal-planner {
+    margin-top: 20px;
+  }
+  
+  .week-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .week-days {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .week-days span,
+  .meal-types span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .week-days span.active,
+  .meal-types span.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .meal-types {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .meal-plan-grid {
+    margin-top: 20px;
+  }
