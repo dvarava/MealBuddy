@@ -1,54 +1,64 @@
-<div class="d-flex flex-column min-vh-100">
-  <main class="flex-grow-1 px-5">
+<div class="d-flex flex-column min-vh-100 bg-light">
+  <main class="flex-grow-1 px-5 mt-5">
     <div class="container">
-      <h2>Search for Recipes</h2>
-      <div class="search-section">
-        <div class="input-group mb-3">
+      <h2 class="text-dark mb-4">Search for Recipes</h2>
+      <div class="search-section mb-4">
+        <div class="input-group">
           <input type="text" class="form-control" placeholder="Recipes, groceries, meal plans..." [(ngModel)]="searchQuery">
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="button" (click)="searchRecipes()">Search</button>
-          </div>
+          <button class="btn btn-success" type="button" (click)="searchRecipes()">
+            <i class="bi bi-search"></i> Search
+          </button>
         </div>
-        <div class="filter-section" *ngIf="showFilters">
-
+        <div class="filter-section mt-3" *ngIf="showFilters">
         </div>
       </div>
-    
       <div class="search-results mb-5">
-        <h3 *ngIf="searchResults.length > 0">Recipes based off your search</h3>
-        <div class="row">
-          <div class="col-md-3" *ngFor="let recipe of searchResults">
-            <div class="card mb-3 h-100 d-flex flex-column">
-              <img [src]="recipe.image" class="card-img-top" alt="{{ recipe.name }}">
+        <h3 class="text-dark mb-4" *ngIf="searchResults.length > 0">Recipes based on your search</h3>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col" *ngFor="let recipe of searchResults">
+            <div class="card h-100 shadow-sm">
+              <img [src]="recipe.image" class="card-img-top" alt="{{ recipe.title }}">
               <div class="card-body d-flex flex-column">
                 <div class="card-content flex-grow-1">
                   <h5 class="card-title">{{ recipe.title }}</h5>
                 </div>
-                <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
-                <button class="btn btn-primary mt-1" (click)="addToFavorites(recipe)">Add to Favorites</button>
+                <div class="mt-auto">
+                  <a [routerLink]="['/recipe', recipe.id]" class="btn btn-success">
+                    <i class="bi bi-info-circle"></i> Details
+                  </a>
+                  <button class="btn btn-outline-primary mx-1" (click)="addToFavorites(recipe)">
+                    <i class="bi bi-heart"></i> Add to Favorites
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    
-      <!-- <div class="popular-recipes">
-        <h3>Popular Recipes</h3>
-        <div class="row">
-          <div class="col-md-3" *ngFor="let recipe of popularRecipes">
-            <div class="card mb-3 h-100 d-flex flex-column">
-              <img [src]="recipe.image" class="card-img-top" alt="{{recipe.name}}">
+
+      <div class="popular-recipes mb-5">
+        <h3 class="text-dark mb-4">Popular Recipes</h3>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col" *ngFor="let recipe of popularRecipes">
+            <div class="card h-100 shadow-sm">
+              <img [src]="recipe.image" class="card-img-top" alt="{{ recipe.title }}">
               <div class="card-body d-flex flex-column">
                 <div class="card-content flex-grow-1">
-                  <h5 class="card-title">{{recipe.title}}</h5>
+                  <h5 class="card-title">{{ recipe.title }}</h5>
                 </div>
-                <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
-                <button class="btn btn-primary mt-1" (click)="addToFavorites(recipe)">Add to Favorites</button>
+                <div class="mt-auto">
+                  <a [routerLink]="['/recipe', recipe.id]" class="btn btn-success">
+                    <i class="bi bi-info-circle"></i> Details
+                  </a>
+                  <button class="btn btn-outline-primary mx-1" (click)="addToFavorites(recipe)">
+                    <i class="bi bi-heart"></i> Add to Favorites
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </main>
 </div>

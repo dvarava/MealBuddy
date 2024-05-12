@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Recipe } from '../interfaces/recipe';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class FavouritesService {
   constructor(private http: HttpClient) { }
 
   getFavouriteRecipes() {
-    this.http.get<{ recipes: Recipe[] }>('http://localhost:3000/recipes').subscribe((jsonData) => {
+    this.http.get<{ recipes: Recipe[] }>('http://3.249.164.129:5050/recipes').subscribe((jsonData) => {
       this.recipes = jsonData.recipes;
       this.recipeSubject.next(this.recipes);
     });
@@ -35,7 +34,7 @@ export class FavouritesService {
 
       console.log('Recipe data being sent to the server:', recipeData);
   
-      this.http.post<{ message: string, savedRecipe: Recipe }>('http://localhost:3000/add-recipe', recipeData).subscribe(
+      this.http.post<{ message: string, savedRecipe: Recipe }>('http://3.249.164.129:5050/add-recipe', recipeData).subscribe(
         (response) => {
           console.log(response.message);
           this.recipes.push(response.savedRecipe);
@@ -51,7 +50,7 @@ export class FavouritesService {
   }
 
   onDeleteRecipe(id: number) {
-    this.http.delete<{ message: string }>(`http://localhost:3000/remove-recipe-from-favourites/${id}`).subscribe(
+    this.http.delete<{ message: string }>(`http://3.249.164.129:5050/remove-recipe/${id}`).subscribe(
       (jsonData) => {
         console.log(jsonData.message);
         this.getFavouriteRecipes();

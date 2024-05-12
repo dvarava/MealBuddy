@@ -1,20 +1,30 @@
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
-    <h2>Add to Meal Plan</h2>
-    <p>Selected Recipe: {{ recipe.title }}</p>
-    <div>
-      <label for="day-select">Select Day:</label>
-      <select id="day-select" [(ngModel)]="selectedDay">
-        <option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</option>
-      </select>
+    <div class="modal-header">
+      <h5 class="modal-title">Add to Meal Plan</h5>
+      <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
     </div>
-    <div>
-      <label for="meal-type-select">Select Meal Type:</label>
-      <select id="meal-type-select" [(ngModel)]="selectedMealType">
-        <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
-      </select>
+    <div class="modal-body">
+      <p>
+        Selected Recipe:<br />
+        <strong>{{ recipe.title }}</strong>
+      </p>
+      <div class="mb-3">
+        <label for="day-select" class="form-label">Select Day:</label>
+        <select id="day-select" class="form-select" [(ngModel)]="selectedDay">
+          <option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="meal-type-select" class="form-label">Select Meal Type:</label>
+        <select id="meal-type-select" class="form-select" [(ngModel)]="selectedMealType">
+          <option *ngFor="let mealType of mealTypes" [value]="mealType">{{ mealType }}</option>
+        </select>
+      </div>
     </div>
-    <button (click)="addToMealPlan()">Add to Meal Plan</button>
-    <button (click)="closeModal()">Close</button>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+      <button type="button" class="btn btn-success" (click)="addToMealPlan()"><i class="bi bi-calendar-plus"></i> Add to Meal Plan</button>
+    </div>
   </div>
 </div>

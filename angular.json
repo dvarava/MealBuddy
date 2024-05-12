@@ -26,6 +26,7 @@
             ],
             "styles": [
               "bootstrap/dist/css/bootstrap.min.css",
+              "bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -82,7 +83,12 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/bootstrap-icons/font/fonts",
+                "output": "/assets/fonts/"
+              }
             ],
             "styles": [
               "src/styles.css"

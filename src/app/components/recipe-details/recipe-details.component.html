@@ -1,34 +1,36 @@
-<div class="d-flex flex-column min-vh-100">
-  <main class="flex-grow-1 px-5">
+<div class="d-flex flex-column min-vh-100 bg-light">
+  <main class="flex-grow-1 px-5 my-5">
     <div class="container">
       <div class="row" *ngIf="recipe">
         <div class="col-md-6">
-          <img [src]="recipe.image" alt="Recipe Image" class="img-fluid">
+          <img [src]="recipe.image" alt="Recipe Image" class="img-fluid rounded">
         </div>
         <div class="col-md-6">
-          <h2>{{ recipe.title }}</h2>
-          <p>Prep time: {{ recipe.readyInMinutes }} min</p>
-          <p>Servings: {{ recipe.servings }}</p>
-          <h4>Ingredients:</h4>
-          <ul>
-            <li *ngFor="let ingredient of recipe.extendedIngredients">
-              {{ ingredient.originalName }}
+          <h2 class="text-dark mb-3">{{ recipe.title }}</h2>
+          <p class="mb-1"><i class="bi bi-clock text-success me-2"></i> Prep time: {{ recipe.readyInMinutes }} min</p>
+          <p class="mb-3"><i class="bi bi-people text-success me-2"></i> Servings: {{ recipe.servings }}</p>
+          <h4 class="text-dark mb-3">Ingredients:</h4>
+          <ul class="list-unstyled">
+            <li *ngFor="let ingredient of recipe.extendedIngredients" class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i> {{ ingredient.originalName }}
             </li>
           </ul>
-          <h4>Macros:</h4>
-          <ul *ngIf="recipe.nutrition">
-            <li>Calories: {{ recipe.nutrition.nutrients[0].amount }}</li>
-            <li>Carbs: {{ recipe.nutrition.nutrients[1].amount }}g</li>
-            <li>Fat: {{ recipe.nutrition.nutrients[2].amount }}g</li>
-            <li>Protein: {{ recipe.nutrition.nutrients[3].amount }}g</li>
+          <h4 class="text-dark mb-3">Macros:</h4>
+          <ul class="list-unstyled" *ngIf="recipe.nutrition">
+            <li><i class="bi bi-droplet text-success me-2"></i> Calories: {{ recipe.nutrition.nutrients[0].amount }}</li>
+            <li><i class="bi bi-square text-success me-2"></i> Carbs: {{ recipe.nutrition.nutrients[1].amount }}g</li>
+            <li><i class="bi bi-egg text-success me-2"></i> Fat: {{ recipe.nutrition.nutrients[2].amount }}g</li>
+            <li><i class="bi bi-egg-fried text-success me-2"></i> Protein: {{ recipe.nutrition.nutrients[3].amount }}g</li>
           </ul>
         </div>
       </div>
       <div class="row mt-4" *ngIf="recipe && recipe.analyzedInstructions">
         <div class="col-md-12">
-          <h4>Instructions:</h4>
-          <ol>
-            <li *ngFor="let instruction of recipe.analyzedInstructions[0].steps">{{ instruction.step }}</li>
+          <h4 class="text-dark mb-3">Instructions:</h4>
+          <ol class="list-unstyled">
+            <li *ngFor="let instruction of recipe.analyzedInstructions[0].steps" class="mb-2">
+              <i class="bi bi-arrow-right-circle text-success me-2"></i> {{ instruction.step }}
+            </li>
           </ol>
         </div>
       </div>

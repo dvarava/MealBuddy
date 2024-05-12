@@ -1,36 +1,52 @@
-<div class="d-flex flex-column min-vh-100">
-  <main class="flex-grow-1 px-5">
+<div class="d-flex flex-column min-vh-100 bg-light">
+  <main class="flex-grow-1 px-5 m-5">
     <div class="container">
-      <h2>Your Meal Plan</h2>
+      <h2 class="text-dark mb-4">Your Meal Plan</h2>
       <div class="meal-planner">
-        <div class="week-navigation">
-          <button class="btn btn-outline-secondary">&#8249; Prev Week</button>
-          <div class="week-days">
-            <span *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']"
-                  [ngClass]="{'active': selectedDay === day}"
-                  (click)="selectDay(day)">{{ day }}</span>
+        <div class="week-navigation d-flex align-items-center mb-3">
+          <button class="btn btn-outline-secondary">
+            <i class="bi bi-chevron-left"></i> Prev Week
+          </button>
+          <div class="week-days mx-3">
+            <span
+              *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']"
+              [ngClass]="{ 'active bg-dark text-white': selectedDay === day }"
+              (click)="selectDay(day)"
+              class="px-2 cursor-pointer">{{ day }}</span>
           </div>
-          <button class="btn btn-outline-secondary">Next Week &#8250;</button>
+          <button class="btn btn-outline-secondary">
+            Next Week <i class="bi bi-chevron-right"></i>
+          </button>
         </div>
-        <div class="meal-types">
-          <span *ngFor="let mealType of ['Breakfast', 'Lunch', 'Dinner', 'Snacks']"
-                [ngClass]="{'active': selectedMealType === mealType}"
-                (click)="selectMealType(mealType)">{{ mealType }}</span>
+        <div class="meal-types mb-3">
+          <span
+            *ngFor="let mealType of ['Breakfast', 'Lunch', 'Dinner', 'Snacks']"
+            [ngClass]="{ 'active  bg-dark text-white': selectedMealType === mealType }"
+            (click)="selectMealType(mealType)"
+            class="px-2 cursor-pointer">{{ mealType }}</span>
         </div>
         <div class="meal-plan-grid">
           <div *ngIf="selectedDay && selectedMealType">
-            <div *ngFor="let recipe of mealPlan[selectedDay][selectedMealType]" class="card mb-3">
-              <div class="row no-gutters">
+            <div *ngFor="let recipe of mealPlan[selectedDay][selectedMealType]" class="card mb-3 shadow-sm">
+              <div class="row g-0">
                 <div class="col-md-4">
-                  <img [src]="recipe.image" [alt]="recipe.title" class="card-img">
+                  <img [src]="recipe.image" [alt]="recipe.title" class="img-fluid rounded-start">
                 </div>
                 <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ recipe.title }}</h5>
-                    <p class="card-text">Servings: {{ recipe.servings }}</p>
-                    <p class="card-text">Ready in: {{ recipe.readyInMinutes }} minutes</p>
-                    <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
-                    <button class="btn btn-danger" (click)="removeRecipeFromMealPlan(recipe, selectedDay, selectedMealType)">Remove</button>
+                  <div class="card-body d-flex flex-column">
+                    <div class="card-content flex-grow-1 mb-4">
+                      <h5 class="card-title">{{ recipe.title }}</h5>
+                      <p class="card-text mb-0">Servings: {{ recipe.servings }}</p>
+                      <p class="card-text">Ready in: {{ recipe.readyInMinutes }} minutes</p>
+                    </div>
+                    <div class="mt-auto">
+                      <a [routerLink]="['/recipe', recipe.id]" class="btn btn-success">
+                        <i class="bi bi-info-circle"></i> Details
+                      </a>
+                      <button class="btn btn-outline-danger ms-1" (click)="removeRecipeFromMealPlan(recipe, selectedDay, selectedMealType)">
+                        <i class="bi bi-trash"></i> Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

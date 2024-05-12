@@ -1,37 +1,42 @@
-<div class="d-flex flex-column min-vh-100">
+<div class="d-flex flex-column min-vh-100 bg-light">
   <main class="flex-grow-1 px-5">
     <section class="hero text-center mt-5">
-      <h1 class="display-4">Simplify meal planning with MealBuddy</h1>
-      <p class="lead">Discover new recipes, create meal plans, and generate grocery lists with ease.</p>
-      <button class="btn btn-primary btn-lg">Get Started</button>
+      <h1 class="display-4 text-dark">Simplify meal planning with MealBuddy</h1>
+      <p class="lead text-muted mb-4">Discover new recipes, create meal plans, and generate grocery lists with ease.</p>
+      <a class="btn btn-success btn-lg" routerLink="/discover-recipes" routerLinkActive="active" ariaCurrentWhenActive="page">Get Started</a>
     </section>
-
     <section class="features mt-5">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card">
-            <img src="path/to/image1.png" class="card-img-top" alt="Feature 1">
-            <div class="card-body">
-              <h5 class="card-title">Text that describes features</h5>
-              <p class="card-text">Text that describes features. Text that describes features. Text that describes features.</p>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100 shadow-sm p-5">
+            <i class="bi bi-bookmark-check text-success fs-1 mt-3"></i>
+            <div class="card-body d-flex flex-column">
+              <div class="card-content flex-grow-1">
+                <h5 class="card-title text-dark">Discover Recipes</h5>
+                <p class="card-text">Explore a vast collection of delicious recipes tailored to your preferences.</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card">
-            <img src="path/to/image2.png" class="card-img-top" alt="Feature 2">
-            <div class="card-body">
-              <h5 class="card-title">Text that describes features</h5>
-              <p class="card-text">Text that describes features. Text that describes features. Text that describes features.</p>
+        <div class="col">
+          <div class="card h-100 shadow-sm p-5">
+            <i class="bi bi-calendar-check text-success fs-1 mt-3"></i>
+            <div class="card-body d-flex flex-column">
+              <div class="card-content flex-grow-1">
+                <h5 class="card-title text-dark">Create Meal Plans</h5>
+                <p class="card-text">Easily plan your meals for the week, ensuring a balanced and varied diet.</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card">
-            <img src="path/to/image3.png" class="card-img-top" alt="Feature 3">
-            <div class="card-body">
-              <h5 class="card-title">Text that describes features</h5>
-              <p class="card-text">Text that describes features. Text that describes features. Text that describes features.</p>
+        <div class="col">
+          <div class="card h-100 shadow-sm p-5">
+            <i class="bi bi-cart-check text-success fs-1 mt-3"></i>
+            <div class="card-body d-flex flex-column">
+              <div class="card-content flex-grow-1">
+                <h5 class="card-title text-dark">Generate Grocery Lists</h5>
+                <p class="card-text">Automatically generate grocery lists based on your meal plan, streamlining your shopping experience.</p>
+              </div>
             </div>
           </div>
         </div>

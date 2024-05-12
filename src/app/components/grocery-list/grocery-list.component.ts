@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Ingredient } from '../../interfaces/ingredient';
-import { SpoonacularService } from '../../services/spoonacular.service';
 import { Recipe } from '../../interfaces/recipe';
-import { FavouritesService } from '../../services/favourites.service';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
@@ -28,6 +26,7 @@ export class GroceryListComponent {
   constructor(private groceryService: GroceryService, private mealPlanService: MealPlanService) { }
 
   ngOnInit() {
+    this.clearList();
     this.fetchGroceryList();
   
     this.mealPlanService.getMealPlan().subscribe(
@@ -119,18 +118,18 @@ export class GroceryListComponent {
     }
   }
 
-  clearList() {
-    this.groceryService.clearGroceryList().subscribe(
-      (response) => {
-        console.log(response.message);
-        this.ingredients = [];
-        this.selectedIngredient = null;
-      },
-      (error) => {
-        console.error('Error clearing grocery list:', error);
-      }
-    );
-  }
+clearList() {
+  this.groceryService.clearGroceryList().subscribe(
+    (response) => {
+      console.log(response.message);
+      this.ingredients = [];
+      this.selectedIngredient = null;
+    },
+    (error) => {
+      console.error('Error clearing grocery list:', error);
+    }
+  );
+}
 
   openModal() {
     this.showModal = true;

@@ -10,7 +10,7 @@ import { Recipe } from '../interfaces/recipe';
 export class SpoonacularService {
   private apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
   private recipeInfoUrl = 'https://api.spoonacular.com/recipes/{id}/information?includeNutrition=true';
-  private apiKey = '9df65189844348ca988c9fcbc1a7b23f';
+  private apiKey = 'c5d83f33429a42e5a6a590866740f5ed';
 
   constructor(private http: HttpClient) { }
 
@@ -51,7 +51,11 @@ export class SpoonacularService {
     params = params.append('number', '4');
 
     return this.http.get<any>(this.apiUrl, { params }).pipe(
-      map(response => response.results)
+      map(response => response.results),
+      mergeMap((results: any[]) => {
+        const recipeIds = results.map(result => result.id);
+        return this.fetchRecipeDetails(recipeIds);
+      })
     );
   }
 

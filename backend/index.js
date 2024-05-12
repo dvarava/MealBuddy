@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 
 const cors = require('cors');
 const app = express();
+const PORT = process.env.PORT || 5050;
 
 const mongoose = require('mongoose');
 const RecipeModel = require('./recipe-schema');
@@ -17,22 +18,19 @@ mongoose.connect("mongodb+srv://varavadenik16:c8GTW6LzhLHO8ImU@cluster0.lutyet8.
     console.log('Error connecting to MongoDB');
   })
   
-app.use(cors({
-    origin: 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
-  }));
-// let mealPlan = {
-//     Monday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Tuesday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Wednesday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Thursday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Friday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Saturday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] },
-//     Sunday: { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] }
-// };
+const corsOptions = {
+  origin: 'http://mealbuddywp1.s3-website-eu-west-1.amazonaws.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
+});
 
 // Get the recipes
 app.get('/recipes', (req, res, next) => {
