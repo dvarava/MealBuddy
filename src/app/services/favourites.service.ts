@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Recipe } from '../interfaces/recipe';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,33 @@ export class FavouritesService {
   }  
 
   onAddRecipe(recipe: Recipe) {
-    this.http.post<{ message: string }>('http://localhost:3000/add-recipe-to-favourites', recipe).subscribe(
-      (jsonData) => {
-        console.log(jsonData.message);
-        this.getFavouriteRecipes();
-      },
-      (error) => {
-        console.error('Error adding recipe to favorites:', error);
-      }
-    );
+    if (recipe.id) {
+      const recipeData = {
+        id: recipe.id,
+        title: recipe.title,
+        image: recipe.image,
+        servings: recipe.servings,
+        readyInMinutes: recipe.readyInMinutes,
+        extendedIngredients: recipe.extendedIngredients,
+        analyzedInstructions: recipe.analyzedInstructions,
+        nutrition: recipe.nutrition
+      };
+
+      console.log('Recipe data being sent to the server:', recipeData);
+  
+      this.http.post<{ message: string, savedRecipe: Recipe }>('http://localhost:3000/add-recipe', recipeData).subscribe(
+        (response) => {
+          console.log(response.message);
+          this.recipes.push(response.savedRecipe);
+          this.recipeSubject.next(this.recipes);
+        },
+        (error) => {
+          console.error('Error adding recipe to favorites:', error);
+        }
+      );
+    } else {
+      console.error('Invalid recipe object. Spoonacular ID is missing.');
+    }
   }
 
   onDeleteRecipe(id: number) {

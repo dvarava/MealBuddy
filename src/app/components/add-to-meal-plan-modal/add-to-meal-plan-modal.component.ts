@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Recipe } from '../../interfaces/recipe';
 import { FormsModule } from '@angular/forms';
-import { style } from '@angular/animations';
+import { MealPlanService } from '../../services/meal-plan.service';
 
 @Component({
   selector: 'app-add-to-meal-plan-modal',
@@ -12,9 +12,11 @@ import { style } from '@angular/animations';
   styleUrl: './add-to-meal-plan-modal.component.css'
 })
 export class AddToMealPlanModalComponent {
+  constructor(private mealPlanService: MealPlanService) {}
+
   @Input() recipe!: Recipe;
   @Input() showModal: boolean = false;
-  @Output() addRecipe = new EventEmitter<{ recipe: Recipe, day: string, mealType: string }>();
+  @Output() addRecipe = new EventEmitter<{ id: number, day: string, mealType: string }>();
   @Output() closeModalEvent = new EventEmitter<void>();
 
   daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -23,8 +25,16 @@ export class AddToMealPlanModalComponent {
   selectedMealType: string = '';
 
   addToMealPlan() {
-    this.addRecipe.emit({ recipe: this.recipe, day: this.selectedDay, mealType: this.selectedMealType });
-    this.closeModal();
+    this.mealPlanService.addRecipeToMealPlan(this.recipe.id, this.selectedDay, this.selectedMealType)
+      .subscribe(
+        (response) => {
+          console.log(response.message);
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error adding recipe to meal plan:', error);
+        }
+      );
   }
 
   closeModal() {

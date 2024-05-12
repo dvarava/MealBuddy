@@ -15,7 +15,7 @@ import { Recipe } from '../../interfaces/recipe';
   styleUrl: './recipe-details.component.css'
 })
 export class RecipeDetailsComponent {
-  recipeId?: number;
+  id?: number;
   recipe: Recipe | null = null;
 
   constructor(
@@ -25,14 +25,14 @@ export class RecipeDetailsComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.recipeId = +params['id'];
+      this.id = +params['id'];
       this.getRecipeDetails();
     });
   }
 
   getRecipeDetails() {
-    if (this.recipeId) {
-      this.spoonacularService.getRecipeById(this.recipeId).subscribe(
+    if (this.id) {
+      this.spoonacularService.getRecipeById(this.id).subscribe(
         recipe => {
           this.recipe = recipe;
         },

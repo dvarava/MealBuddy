@@ -58,6 +58,7 @@ export class MealPlanComponent {
   }
 
   addRecipeToMealPlan(recipe: Recipe, day: string, mealType: string) {
+    console.log('Adding recipe to meal plan:', recipe, day, mealType);
     this.mealPlanService.addRecipeToMealPlan(recipe.id, day, mealType).subscribe(
       (response) => {
         console.log(response.message);

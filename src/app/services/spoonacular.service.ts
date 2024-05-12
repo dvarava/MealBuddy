@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { Recipe } from '../interfaces/recipe';
 
 @Injectable({
@@ -10,7 +10,6 @@ import { Recipe } from '../interfaces/recipe';
 export class SpoonacularService {
   private apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
   private recipeInfoUrl = 'https://api.spoonacular.com/recipes/{id}/information?includeNutrition=true';
-  //private randomRecipesUrl = 'https://api.spoonacular.com/recipes/random';
   private apiKey = '9df65189844348ca988c9fcbc1a7b23f';
 
   constructor(private http: HttpClient) { }
@@ -29,8 +28,20 @@ export class SpoonacularService {
     }
 
     return this.http.get<any>(this.apiUrl, { params }).pipe(
-      map(response => response.results)
+      map(response => response.results),
+      mergeMap((results: any[]) => {
+        const recipeIds = results.map(result => result.id);
+        return this.fetchRecipeDetails(recipeIds);
+      })
     );
+  }
+
+  private fetchRecipeDetails(recipeIds: number[]): Observable<Recipe[]> {
+    const requests = recipeIds.map(id =>
+      this.http.get<Recipe>(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=true&apiKey=${this.apiKey}`)
+    );
+  
+    return forkJoin(requests);
   }
 
   getPopularRecipes(): Observable<any> {
@@ -53,17 +64,4 @@ export class SpoonacularService {
   addIngredientsToGroceryList(ingredients: string[]) {
     console.log('Ingredients added to Grocery List:', ingredients);
   }
-
-  // getRandomRecipes(number: number, includeTags?: string, excludeTags?: string): Observable<any> {
-  //   let params = new HttpParams();
-  //   params = params.append('apiKey', this.apiKey);
-  //   params = params.append('number', number.toString());
-  //   if (includeTags) {
-  //     params = params.append('include-tags', includeTags);
-  //   }
-  //   if (excludeTags) {
-  //     params = params.append('exclude-tags', excludeTags);
-  //   }
-  //   return this.http.get<any>(this.randomRecipesUrl, { params });
-  // }
 }

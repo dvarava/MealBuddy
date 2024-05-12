@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { FavouritesService } from '../../services/favourites.service';
+import { Recipe } from '../../interfaces/recipe';
 
 @Component({
   selector: 'app-discover-recipes',
@@ -55,7 +56,11 @@ export class DiscoverRecipesComponent implements OnInit {
     );
   }
 
-  addToFavorites(recipe: any) {
-    this.favouritesService.onAddRecipe(recipe);
+  addToFavorites(recipe: Recipe) {
+    if (recipe.id) {
+      this.favouritesService.onAddRecipe(recipe);
+    } else {
+      console.error('Invalid recipe object. Spoonacular ID is missing.');
+    }
   }
 }

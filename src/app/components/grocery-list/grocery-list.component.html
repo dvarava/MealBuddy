@@ -2,27 +2,46 @@
   <main class="flex-grow-1 px-5">
     <div class="container">  
         <h2>Your Grocery List</h2>
-      
-        <div class="grocery-grid">
-          <div class="grocery-item" *ngFor="let ingredient of ingredients">
-            <div class="grocery-item-name">{{ ingredient.originalName }}</div>
-            <div class="grocery-item-amount">{{ ingredient.amount }} {{ ingredient.unit }}</div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col" *ngFor="let ingredient of ingredients">
+            <div class="card h-100" (click)="selectIngredient(ingredient)" [ngClass]="{'selected': ingredient === selectedIngredient}">
+              <div class="card-body">
+                <h5 class="card-title">{{ ingredient.originalName }}</h5>
+                <p class="card-text">{{ ingredient.amount }} {{ ingredient.unit }}</p>
+              </div>
+            </div>
           </div>
         </div>
-      
-        <div class="grocery-actions">
-          <button>Mark as purchased</button>
-          <button>Clear List</button>
-          <button>Download</button>
-          <button>Add item</button>
-        </div>
-      
-        <div class="item-details">
-          <div *ngIf="selectedIngredient">
-            <h4>{{ selectedIngredient.originalName }}</h4>
-            <p>{{ selectedIngredient.amount }} {{ selectedIngredient.unit }}</p>
-          </div>
+        
+        <div class="d-flex justify-content-center my-4">
+          <button class="btn btn-primary m-1" (click)="markAsPurchased()">Mark as purchased</button>
+          <button class="btn btn-secondary m-1" (click)="clearList()">Clear List</button>
+          <button class="btn btn-secondary m-1" (click)="downloadGroceryList()">Download</button>
+          <button class="btn btn-secondary m-1" (click)="openModal()">Add item</button>
         </div>
     </div>
   </main>
 </div>
+
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <h2>Add New Ingredient</h2>
+    <div>
+      <label for="ingredient-name">Ingredient Name:</label>
+      <input type="text" id="ingredient-name" [(ngModel)]="newIngredientName">
+    </div>
+    <div>
+      <label for="ingredient-amount">Amount:</label>
+      <input type="number" id="ingredient-amount" [(ngModel)]="newIngredientAmount">
+    </div>
+    <div>
+      <label for="ingredient-unit">Unit:</label>
+      <input type="text" id="ingredient-unit" [(ngModel)]="newIngredientUnit">
+    </div>
+    <button (click)="addIngredient()">Add Ingredient</button>
+    <button (click)="closeModal()">Cancel</button>
+  </div>
+</div>
+
+

@@ -13,8 +13,8 @@
                 <p>Ready in: {{ recipe.readyInMinutes }} minutes</p>
               </div>
               <a [routerLink]="['/recipe', recipe.id]" class="btn btn-primary mt-auto">Details</a>
-              <button class="btn btn-danger" (click)="deleteRecipe(recipe.id)">Delete</button>
-              <button class="btn btn-secondary" (click)="openAddToMealPlanModal(recipe)">Add to Meal Plan</button>
+              <button class="btn btn-danger mt-1" (click)="deleteRecipe(recipe.id)">Delete</button>
+              <button class="btn btn-secondary mt-1" (click)="openAddToMealPlanModal(recipe)">Add to Meal Plan</button>
             </div>
           </div>
         </div>
@@ -22,11 +22,10 @@
     </div>
 
     <app-add-to-meal-plan-modal
-      *ngIf="showModal && selectedRecipe"
-      [recipe]="selectedRecipe"
-      [showModal]="showModal"
-      (addRecipe)="addRecipeToMealPlan($event)"
-      (closeModalEvent)="closeModal()"
-    ></app-add-to-meal-plan-modal>
+    *ngIf="showModal && selectedRecipe"
+    [recipe]="selectedRecipe"
+    [showModal]="showModal"
+    (closeModalEvent)="closeModal()"
+  ></app-add-to-meal-plan-modal>
   </main>
 </div>

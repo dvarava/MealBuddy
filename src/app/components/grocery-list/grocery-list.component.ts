@@ -6,43 +6,85 @@ import { FavouritesService } from '../../services/favourites.service';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
+import { FormsModule } from '@angular/forms';
+import { GroceryService } from '../../services/grocery.service';
+import { MealPlanService } from '../../services/meal-plan.service';
 
 @Component({
     selector: 'app-grocery-list',
     standalone: true,
     templateUrl: './grocery-list.component.html',
     styleUrl: './grocery-list.component.css',
-    imports: [CommonModule, FooterComponent, HeaderComponent]
+    imports: [CommonModule, FooterComponent, HeaderComponent, FormsModule]
 })
 export class GroceryListComponent {
   ingredients: Ingredient[] = [];
   selectedIngredient: Ingredient | null = null;
-
-  constructor(
-    private spoonacularService: SpoonacularService,
-    private favouritesService: FavouritesService
-  ) { }
+  showModal: boolean = false;
+  newIngredientName: string = '';
+  newIngredientAmount: number = 0;
+  newIngredientUnit: string = ''
+  
+  constructor(private groceryService: GroceryService, private mealPlanService: MealPlanService) { }
 
   ngOnInit() {
-    this.favouritesService.getFavouriteRecipes();
-    this.favouritesService.recipeSubject.subscribe((recipes: Recipe[]) => {
-      const ingredientsPromises = recipes.map(recipe =>
-        this.spoonacularService.getRecipeById(recipe.id).toPromise()
-          .then(recipeDetails => this.getIngredientsFromRecipe(recipeDetails))
-          .catch(error => {
-            console.error(`Error fetching recipe ${recipe.id}:`, error);
-            return [];
-          })
-      );
+    this.fetchGroceryList();
   
-      Promise.all(ingredientsPromises)
-        .then(ingredientsLists => {
-          this.ingredients = ingredientsLists.reduce((acc: Ingredient[], curr) => acc.concat(curr), []);
-        })
-        .catch(error => {
-          console.error('Error fetching ingredients:', error);
-        });
-    });
+    this.mealPlanService.getMealPlan().subscribe(
+      (mealPlan) => {
+        const allIngredients: Ingredient[] = [];
+  
+        for (const day in mealPlan) {
+          for (const mealType in mealPlan[day]) {
+            const recipes = mealPlan[day][mealType];
+            recipes.forEach((recipe) => {
+              allIngredients.push(...this.getIngredientsFromRecipe(recipe));
+            });
+          }
+        }
+  
+        console.log('allIngredients:', allIngredients);
+        this.addIngredientsToGroceryList(allIngredients);
+      },
+      (error) => {
+        console.error('Error fetching meal plan:', error);
+      }
+    );
+  }
+
+  fetchGroceryList() {
+    this.groceryService.getGroceryList().subscribe(
+      (groceryList: Ingredient[]) => {
+        this.ingredients = groceryList;
+      },
+      (error: any) => {
+        console.error('Error fetching grocery list:', error);
+      }
+    );
+  }
+
+  addIngredientsToGroceryList(items: Ingredient[]) {
+    this.groceryService.addIngredientsToGroceryList(items).subscribe(
+      (response: { message: any; groceryList: Ingredient[]; }) => {
+        console.log(response.message);
+        this.ingredients = response.groceryList;
+      },
+      (error: any) => {
+        console.error('Error adding ingredients to grocery list:', error);
+      }
+    );
+  }
+
+  removeIngredientFromGroceryList(index: number) {
+    this.groceryService.removeIngredientFromGroceryList(index).subscribe(
+      (response: { message: any; groceryList: Ingredient[]; }) => {
+        console.log(response.message);
+        this.ingredients = response.groceryList;
+      },
+      (error: any) => {
+        console.error('Error removing ingredient from grocery list:', error);
+      }
+    );
   }
 
   getIngredientsFromRecipe(recipe: Recipe): Ingredient[] {
@@ -56,6 +98,86 @@ export class GroceryListComponent {
   }
 
   selectIngredient(ingredient: Ingredient) {
+    console.log('Selected ingredient:', ingredient);
     this.selectedIngredient = ingredient;
+
+  }
+
+  markAsPurchased() {
+    if (this.selectedIngredient) {
+      const index = this.ingredients.indexOf(this.selectedIngredient);
+      this.groceryService.removeIngredientFromGroceryList(index).subscribe(
+        (response) => {
+          console.log(response.message);
+          this.ingredients = response.groceryList;
+          this.selectedIngredient = null;
+        },
+        (error) => {
+          console.error('Error removing ingredient from grocery list:', error);
+        }
+      );
+    }
+  }
+
+  clearList() {
+    this.groceryService.clearGroceryList().subscribe(
+      (response) => {
+        console.log(response.message);
+        this.ingredients = [];
+        this.selectedIngredient = null;
+      },
+      (error) => {
+        console.error('Error clearing grocery list:', error);
+      }
+    );
+  }
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
+
+  addIngredient() {
+    const newIngredient: Ingredient = {
+      id: this.ingredients.length + 1,
+      originalName: this.newIngredientName,
+      amount: this.newIngredientAmount,
+      unit: this.newIngredientUnit,
+      original: `${this.newIngredientAmount} ${this.newIngredientUnit} ${this.newIngredientName}`
+    };
+  
+    this.groceryService.addIngredientToGroceryList(newIngredient).subscribe(
+      (response: { message: any; groceryList: Ingredient[]; }) => {
+        console.log(response.message);
+        this.ingredients = response.groceryList;
+      },
+      (error: any) => {
+        console.error('Error adding ingredient to grocery list:', error);
+      }
+    );
+  
+    this.closeModal();
+    this.newIngredientName = '';
+    this.newIngredientAmount = 0;
+    this.newIngredientUnit = '';
+  }
+
+  downloadGroceryList() {
+    const formattedIngredients = this.ingredients.map(ingredient => {
+      return `${ingredient.originalName}, ${ingredient.amount} ${ingredient.unit}\n`;
+    }).join('\n');
+    
+    const blob = new Blob([formattedIngredients], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'grocery_list.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 }

@@ -15,12 +15,12 @@ export class MealPlanService {
     return this.http.get<{ [day: string]: { [mealType: string]: Recipe[] } }>(`${this.apiUrl}/meal-plan`);
   }
 
-  addRecipeToMealPlan(recipeId: number, day: string, mealType: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.apiUrl}/meal-plan`, { recipeId, day, mealType });
+  addRecipeToMealPlan(id: number, day: string, mealType: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/meal-plan`, { id, day, mealType });
   }
 
-  removeRecipeFromMealPlan(recipeId: number, day: string, mealType: string): Observable<{ message: string }> {
+  removeRecipeFromMealPlan(id: number, day: string, mealType: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/meal-plan`, {
-      body: { recipeId, day, mealType }
+      body: { id, day, mealType }
     });
   }}
