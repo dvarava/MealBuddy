@@ -7,7 +7,7 @@ import { Ingredient } from '../interfaces/ingredient';
   providedIn: 'root'
 })
 export class GroceryService {
-  private apiUrl = 'http://3.249.164.129:5050/grocery-list';
+  private apiUrl = 'http://34.254.246.165:5050/grocery-list';
 
   constructor(private http: HttpClient) { }
 

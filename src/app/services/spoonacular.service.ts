@@ -10,7 +10,7 @@ import { Recipe } from '../interfaces/recipe';
 export class SpoonacularService {
   private apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
   private recipeInfoUrl = 'https://api.spoonacular.com/recipes/{id}/information?includeNutrition=true';
-  private apiKey = 'c5d83f33429a42e5a6a590866740f5ed';
+  private apiKey = '9df65189844348ca988c9fcbc1a7b23f';
 
   constructor(private http: HttpClient) { }
 

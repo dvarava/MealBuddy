@@ -13,7 +13,7 @@ export class FavouritesService {
   constructor(private http: HttpClient) { }
 
   getFavouriteRecipes() {
-    this.http.get<{ recipes: Recipe[] }>('http://3.249.164.129:5050/recipes').subscribe((jsonData) => {
+    this.http.get<{ recipes: Recipe[] }>('http://34.254.246.165:5050/recipes').subscribe((jsonData) => {
       this.recipes = jsonData.recipes;
       this.recipeSubject.next(this.recipes);
     });
@@ -34,7 +34,7 @@ export class FavouritesService {
 
       console.log('Recipe data being sent to the server:', recipeData);
   
-      this.http.post<{ message: string, savedRecipe: Recipe }>('http://3.249.164.129:5050/add-recipe', recipeData).subscribe(
+      this.http.post<{ message: string, savedRecipe: Recipe }>('http://34.254.246.165:5050/add-recipe', recipeData).subscribe(
         (response) => {
           console.log(response.message);
           this.recipes.push(response.savedRecipe);
@@ -50,7 +50,7 @@ export class FavouritesService {
   }
 
   onDeleteRecipe(id: number) {
-    this.http.delete<{ message: string }>(`http://3.249.164.129:5050/remove-recipe/${id}`).subscribe(
+    this.http.delete<{ message: string }>(`http://34.254.246.165:5050/remove-recipe/${id}`).subscribe(
       (jsonData) => {
         console.log(jsonData.message);
         this.getFavouriteRecipes();

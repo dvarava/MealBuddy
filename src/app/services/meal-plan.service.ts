@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 @Injectable({ providedIn: "root" })
 
 export class MealPlanService {
-  private apiUrl = "http://3.249.164.129:5050";
+  private apiUrl = "http://34.254.246.165:5050";
 
   constructor(private http: HttpClient) {}
 
